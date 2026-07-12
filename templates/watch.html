@@ -1,36 +1,50 @@
 {% extends "base.html" %} {% block title %}Putar: {{ file.original_name }}{%
 endblock %} {% block content %}
 <div class="watch-card">
-  <h1 class="file-title">{{ file.original_name }}</h1>
+  <div class="watch-header">
+    <div class="watch-meta">
+      <span class="meta-chip"
+        >{% if file.is_video %}Video{% elif file.is_audio %}Audio{% else
+        %}File{% endif %}</span
+      >
+      <h1 class="file-title">{{ file.original_name }}</h1>
+    </div>
 
-  {% if file.is_video %}
-  <video controls preload="metadata" class="video-player">
-    <source src="{{ url_for('stream.stream', file_id=file.id) }}" />
-    Browser Anda tidak mendukung tag video.
-  </video>
-  {% elif file.is_audio %}
-  <audio controls preload="metadata" class="audio-player">
-    <source src="{{ url_for('stream.stream', file_id=file.id) }}" />
-    Browser Anda tidak mendukung tag audio.
-  </audio>
-  {% else %}
-  <div class="preview-frame-wrapper">
-    <iframe
-      src="{{ url_for('files.view', file_id=file.id) }}"
-      title="Preview file"
-      class="preview-frame"
-    ></iframe>
+    <div class="watch-actions">
+      <a href="{{ url_for('files.dashboard') }}" class="btn btn-small"
+        >&larr; Kembali ke Dashboard</a
+      >
+    </div>
   </div>
-  <p class="hint">
-    Jika browser tidak bisa menampilkan file secara inline, Anda tetap bisa
-    mengunduh file dari halaman ini.
-  </p>
-  {% endif %}
 
-  <div class="watch-actions">
-    <a href="{{ url_for('files.dashboard') }}" class="btn btn-small"
-      >&larr; Kembali ke Dashboard</a
-    >
+  <div class="media-surface">
+    {% if file.is_video %}
+    <div class="player-wrapper">
+      <video controls preload="metadata" class="video-player">
+        <source src="{{ url_for('stream.stream', file_id=file.id) }}" />
+        Browser Anda tidak mendukung tag video.
+      </video>
+    </div>
+    {% elif file.is_audio %}
+    <div class="player-wrapper">
+      <audio controls preload="metadata" class="audio-player">
+        <source src="{{ url_for('stream.stream', file_id=file.id) }}" />
+        Browser Anda tidak mendukung tag audio.
+      </audio>
+    </div>
+    {% else %}
+    <div class="preview-frame-wrapper">
+      <iframe
+        src="{{ url_for('files.view', file_id=file.id) }}"
+        title="Preview file"
+        class="preview-frame"
+      ></iframe>
+    </div>
+    <p class="hint">
+      Jika browser tidak bisa menampilkan file secara inline, Anda tetap bisa
+      mengunduh file dari halaman ini.
+    </p>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

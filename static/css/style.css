@@ -54,7 +54,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
 }
@@ -72,7 +72,16 @@ body {
   min-width: 0;
 }
 .watch-card {
-  max-width: 800px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 29, 36, 0.98),
+    rgba(20, 22, 29, 0.98)
+  );
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--border);
 }
 
 h1 {
@@ -215,25 +224,100 @@ textarea {
   padding: 40px 0;
 }
 
+.watch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.watch-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.meta-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(91, 140, 255, 0.18);
+  color: #b7caef;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.media-surface {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.player-wrapper {
+  width: 100%;
+}
+
 .video-player,
 .audio-player {
   width: 100%;
-  border-radius: 8px;
-  margin: 16px 0;
+  border-radius: 12px;
+  margin: 0;
+  display: block;
 }
+
+.video-player {
+  min-height: 500px;
+  background: black;
+}
+
+.audio-player {
+  min-height: 80px;
+  background: #111;
+}
+
 .preview-frame-wrapper {
   width: 100%;
-  margin: 16px 0;
+  margin: 0;
 }
+
 .preview-frame {
   width: 100%;
-  min-height: 70vh;
+  min-height: 78vh;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
   background: white;
 }
+
 .watch-actions {
-  margin-top: 12px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .watch-card {
+    padding: 18px;
+  }
+
+  .watch-header {
+    flex-direction: column;
+  }
+
+  .watch-actions {
+    width: 100%;
+  }
+
+  .watch-actions a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .video-player {
+    min-height: 260px;
+  }
 }
 
 .flash-container {
