@@ -1,15 +1,35 @@
+/* ============================================================
+   MyApp — tema "Vault" (arsip digital)
+   Display: Fraunces · Data/nav/tombol: IBM Plex Mono · Body: IBM Plex Sans
+   ============================================================ */
+
 :root {
-  --bg: #0f1115;
-  --surface: #1a1d24;
-  --surface-2: #22262f;
-  --border: #2c303a;
-  --text: #e8e9ec;
-  --text-dim: #9aa0ac;
-  --primary: #5b8cff;
-  --primary-hover: #4677f0;
-  --danger: #ef5a5a;
-  --success: #3ecf8e;
+  --bg: #0e1512;
+  --surface: #161f1a;
+  --surface-2: #1d2822;
+  --surface-3: #232f28;
+  --border: #2b3831;
+  --border-soft: #212b25;
+  --text: #eef1ec;
+  --text-dim: #93a69a;
+  --text-faint: #647468;
+
+  --accent: #d1a054;
+  --accent-hover: #e0b169;
+  --accent-soft: rgba(209, 160, 84, 0.14);
+  --accent-border: rgba(209, 160, 84, 0.35);
+
+  --danger: #e2685a;
+  --danger-soft: rgba(226, 104, 90, 0.14);
+  --success: #6cbf8f;
+  --success-soft: rgba(108, 191, 143, 0.14);
+
   --radius: 10px;
+  --radius-lg: 16px;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 * {
@@ -18,77 +38,166 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
+  font-family: var(--font-body);
+  background:
+    radial-gradient(1200px 500px at 15% -10%, rgba(209, 160, 84, 0.06), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent-soft);
   color: var(--text);
 }
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------------- Navbar ---------------- */
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 32px;
+  padding: 14px 32px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1.2rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
   color: var(--text-dim);
   text-decoration: none;
-  margin-left: 20px;
+  margin-left: 26px;
+  letter-spacing: 0.03em;
+  position: relative;
+  padding-bottom: 2px;
   transition: color 0.15s;
 }
 .nav-links a:hover {
-  color: var(--text);
+  color: var(--accent);
 }
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.2s ease;
+}
+.nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 .nav-user {
-  color: var(--text-dim);
-  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  margin-right: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
+
+/* ---------------- Layout ---------------- */
 
 .container {
   max-width: 1400px;
-  margin: 40px auto;
-  padding: 0 20px;
+  margin: 48px auto;
+  padding: 0 24px;
 }
+
+/* ---------------- Cards ---------------- */
 
 .auth-card,
 .watch-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 32px;
+  border-radius: var(--radius-lg);
+  padding: 36px;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
   overflow: hidden;
   min-width: 0;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  position: relative;
 }
+
+.auth-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent 70%);
+}
+
 .watch-card {
   max-width: 1200px;
   width: 100%;
-  padding: 28px;
-  background: linear-gradient(
-    180deg,
-    rgba(26, 29, 36, 0.98),
-    rgba(20, 22, 29, 0.98)
-  );
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  padding: 30px;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
   border: 1px solid var(--border);
 }
 
+/* ---------------- Headings & type ---------------- */
+
 h1 {
   margin-top: 0;
-  font-size: 1.4rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.65rem;
+  letter-spacing: -0.01em;
   max-width: 100%;
 }
+
 .file-title,
 .auth-card h1,
 .watch-card h1 {
@@ -97,15 +206,21 @@ h1 {
   min-width: 0;
   white-space: normal;
   overflow-wrap: anywhere;
-  word-break: break-all;
+  word-break: break-word;
   max-width: 100%;
 }
 
+/* ---------------- Forms ---------------- */
+
 form label {
   display: block;
-  margin: 14px 0 6px;
-  font-size: 0.9rem;
-  color: var(--text-dim);
+  margin: 16px 0 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
 }
 
 input[type="text"],
@@ -114,122 +229,253 @@ input[type="password"],
 input[type="file"],
 textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 11px 13px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text);
+  font-family: var(--font-body);
   font-size: 0.95rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+input:hover,
+textarea:hover {
+  border-color: var(--text-faint);
+}
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface-3);
 }
 textarea {
   resize: vertical;
-  font-family: inherit;
 }
+
+/* ---------------- Buttons ---------------- */
 
 .btn {
   display: inline-block;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 8px;
   padding: 10px 18px;
-  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   cursor: pointer;
   text-decoration: none;
-  color: white;
+  color: var(--text);
   background: var(--surface-2);
+  border-color: var(--border);
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
 }
+.btn:hover {
+  border-color: var(--text-faint);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
 .btn-primary {
-  background: var(--primary);
-  margin-top: 20px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1206;
+  font-weight: 600;
+  margin-top: 22px;
 }
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
+
 .btn-small {
-  padding: 6px 10px;
-  font-size: 0.8rem;
+  padding: 6px 12px;
+  font-size: 0.74rem;
   margin-right: 6px;
 }
+
 .btn-danger {
-  background: var(--danger);
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
 }
+.btn-danger:hover {
+  background: var(--danger-soft);
+}
+
 .inline-form {
   display: inline;
 }
 
 .auth-switch {
-  margin-top: 18px;
-  font-size: 0.85rem;
-  color: var(--text-dim);
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-faint);
 }
 .auth-switch a {
-  color: var(--primary);
+  color: var(--accent);
+  text-decoration: none;
+}
+.auth-switch a:hover {
+  text-decoration: underline;
 }
 
 .hint {
-  font-size: 0.8rem;
-  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-faint);
+  line-height: 1.6;
 }
+
+/* ---------------- Page header ---------------- */
 
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
 }
+
+.page-header h1::before {
+  content: "Arsip";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+/* ---------------- File ledger table ---------------- */
 
 .file-table {
   width: 100%;
   border-collapse: collapse;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   table-layout: fixed;
+  counter-reset: rownum;
 }
 .file-table th,
 .file-table td {
   text-align: left;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.9rem;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 0.88rem;
   overflow-wrap: anywhere;
   word-break: break-word;
   vertical-align: top;
   max-width: 0;
 }
+.file-table tbody tr {
+  counter-increment: rownum;
+  transition: background 0.12s;
+}
+.file-table tbody tr:hover {
+  background: var(--surface-2);
+}
+.file-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .file-table td:first-child {
   min-width: 220px;
+  font-family: var(--font-mono);
+  font-size: 0.87rem;
+  border-left: 2px solid transparent;
 }
+.file-table tbody tr:hover td:first-child {
+  border-left: 2px solid var(--accent);
+}
+.file-table td:first-child::before {
+  content: counter(rownum, decimal-leading-zero);
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  margin-right: 10px;
+  letter-spacing: 0.02em;
+}
+
 .file-table th {
-  color: var(--text-dim);
-  font-weight: 600;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--surface-2);
 }
+
+.file-table td:nth-child(2),
+.file-table td:nth-child(3) {
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
 .actions {
   white-space: normal;
   min-width: 0;
 }
 
 .badge {
-  background: var(--primary);
-  color: white;
-  font-size: 0.7rem;
-  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 9px;
   border-radius: 20px;
-  margin-left: 8px;
+  margin-left: 10px;
+}
+.badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 
 .empty-state {
-  color: var(--text-dim);
+  color: var(--text-faint);
   text-align: center;
-  padding: 40px 0;
+  padding: 60px 20px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
 }
+.empty-state a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.empty-state a:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- Watch / preview page ---------------- */
 
 .watch-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .watch-meta {
@@ -238,22 +484,33 @@ textarea {
 }
 
 .meta-chip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 5px 12px;
   border-radius: 999px;
-  background: rgba(91, 140, 255, 0.18);
-  color: #b7caef;
-  font-size: 0.75rem;
-  font-weight: 700;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.meta-chip::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .media-surface {
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
   padding: 22px;
   overflow: hidden;
   min-height: 72vh;
@@ -303,6 +560,10 @@ textarea {
 }
 
 @media (max-width: 720px) {
+  .container {
+    margin: 24px auto;
+  }
+
   .watch-card {
     padding: 18px;
     min-height: auto;
@@ -329,24 +590,33 @@ textarea {
   .video-player {
     min-height: 260px;
   }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
 }
 
+/* ---------------- Flash messages ---------------- */
+
 .flash-container {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .flash {
-  padding: 10px 14px;
+  padding: 11px 15px;
   border-radius: 8px;
   margin-bottom: 8px;
-  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
 }
 .flash-success {
-  background: rgba(62, 207, 142, 0.15);
+  background: var(--success-soft);
   color: var(--success);
-  border: 1px solid var(--success);
+  border: 1px solid rgba(108, 191, 143, 0.35);
 }
 .flash-error {
-  background: rgba(239, 90, 90, 0.15);
+  background: var(--danger-soft);
   color: var(--danger);
-  border: 1px solid var(--danger);
+  border: 1px solid rgba(226, 104, 90, 0.35);
 }
