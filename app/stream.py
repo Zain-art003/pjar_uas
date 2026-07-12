@@ -1,3 +1,4 @@
+import mimetypes
 import os
 import re
 
@@ -17,7 +18,7 @@ def watch(file_id):
     record = FileUpload.query.get_or_404(file_id)
     if record.uploader_id != current_user.id:
         abort(403)
-    if not record.is_video:
+    if not record.can_preview:
         abort(404)
     return render_template("watch.html", file=record)
 
@@ -33,7 +34,7 @@ def stream(file_id):
     record = FileUpload.query.get_or_404(file_id)
     if record.uploader_id != current_user.id:
         abort(403)
-    if not record.is_video:
+    if not record.can_preview:
         abort(404)
 
     filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], record.stored_name)
@@ -43,9 +44,9 @@ def stream(file_id):
     file_size = os.path.getsize(filepath)
     range_header = request.headers.get("Range", None)
 
-    ext = record.stored_name.rsplit(".", 1)[-1].lower()
-    mimetypes = {"mp4": "video/mp4", "webm": "video/webm", "mov": "video/quicktime", "mkv": "video/x-matroska"}
-    mimetype = mimetypes.get(ext, "application/octet-stream")
+    mimetype, _ = mimetypes.guess_type(filepath)
+    if not mimetype:
+        mimetype = "application/octet-stream"
 
     if range_header:
         match = re.search(r"bytes=(\d+)-(\d*)", range_header)

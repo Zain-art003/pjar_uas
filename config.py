@@ -23,9 +23,11 @@ class Config:
 
     ALLOWED_EXTENSIONS = {
         "png", "jpg", "jpeg", "gif", "pdf", "doc", "docx",
-        "xlsx", "zip", "rar", "txt", "mp4", "webm", "mov", "mkv",
+        "xlsx", "zip", "rar", "txt", "mp3", "wav", "ogg", "m4a",
+        "flac", "aac", "mp4", "webm", "mov", "mkv",
     }
     VIDEO_EXTENSIONS = {"mp4", "webm", "mov", "mkv"}
+    AUDIO_EXTENSIONS = {"mp3", "wav", "ogg", "m4a", "flac", "aac"}
 
     # SMTP
     SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.gmail.com")

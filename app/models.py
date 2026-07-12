@@ -40,6 +40,15 @@ class FileUpload(db.Model):
 
     uploader_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
+    @property
+    def is_audio(self) -> bool:
+        ext = self.stored_name.rsplit(".", 1)[-1].lower() if "." in self.stored_name else ""
+        return ext in {"mp3", "wav", "ogg", "m4a", "flac", "aac"}
+
+    @property
+    def can_preview(self) -> bool:
+        return self.is_video or self.is_audio
+
     def human_size(self) -> str:
         size = self.filesize or 0
         for unit in ["B", "KB", "MB", "GB"]:

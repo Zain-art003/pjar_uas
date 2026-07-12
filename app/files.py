@@ -24,6 +24,11 @@ def _is_video(filename: str) -> bool:
     return ext in current_app.config["VIDEO_EXTENSIONS"]
 
 
+def _is_audio(filename: str) -> bool:
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return ext in current_app.config["AUDIO_EXTENSIONS"]
+
+
 @files_bp.route("/")
 @login_required
 def dashboard():
