@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>File Saya</h1>
+  <a href="{{ url_for('files.upload') }}" class="btn btn-primary">+ Upload File</a>
+</div>
+
+{% if files %}
+<table class="file-table">
+  <thead>
+    <tr>
+      <th>Nama File</th>
+      <th>Ukuran</th>
+      <th>Tanggal Upload</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in files %}
+    <tr>
+      <td>
+        {{ f.original_name }}
+        {% if f.is_video %}<span class="badge">Video</span>{% endif %}
+      </td>
+      <td>{{ f.human_size() }}</td>
+      <td>{{ f.uploaded_at.strftime('%d-%m-%Y %H:%M') }}</td>
+      <td class="actions">
+        {% if f.is_video %}
+          <a href="{{ url_for('stream.watch', file_id=f.id) }}" class="btn btn-small">Putar</a>
+        {% endif %}
+        <a href="{{ url_for('files.download', file_id=f.id) }}" class="btn btn-small">Unduh</a>
+        <a href="{{ url_for('files.send', file_id=f.id) }}" class="btn btn-small">Kirim Email</a>
+        <form method="POST" action="{{ url_for('files.delete', file_id=f.id) }}" class="inline-form"
+              onsubmit="return confirm('Yakin hapus file ini?');">
+          <button type="submit" class="btn btn-small btn-danger">Hapus</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty-state">Belum ada file. <a href="{{ url_for('files.upload') }}">Upload file pertama Anda</a>.</p>
+{% endif %}
+{% endblock %}

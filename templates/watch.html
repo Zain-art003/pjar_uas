@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Putar: {{ file.original_name }}{% endblock %}
+{% block content %}
+<div class="watch-card">
+  <h1>{{ file.original_name }}</h1>
+  <video controls preload="metadata" class="video-player">
+    <source src="{{ url_for('stream.stream', file_id=file.id) }}">
+    Browser Anda tidak mendukung tag video.
+  </video>
+  <div class="watch-actions">
+    <a href="{{ url_for('files.dashboard') }}" class="btn btn-small">&larr; Kembali ke Dashboard</a>
+  </div>
+</div>
+{% endblock %}

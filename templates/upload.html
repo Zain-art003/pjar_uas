@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Upload File{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h1>Upload File</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <label for="file">Pilih file (dokumen, gambar, atau video)</label>
+    <input type="file" id="file" name="file" required>
+    <p class="hint">Maksimal 500 MB. Format: gambar, pdf, doc, docx, xlsx, zip, rar, txt, mp4, webm, mov, mkv.</p>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+</div>
+{% endblock %}
