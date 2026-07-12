@@ -18,8 +18,6 @@ def watch(file_id):
     record = FileUpload.query.get_or_404(file_id)
     if record.uploader_id != current_user.id:
         abort(403)
-    if not record.can_preview:
-        abort(404)
     return render_template("watch.html", file=record)
 
 

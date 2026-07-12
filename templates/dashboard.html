@@ -27,13 +27,11 @@ content %}
       <td>{{ f.human_size() }}</td>
       <td>{{ f.uploaded_at.strftime('%d-%m-%Y %H:%M') }}</td>
       <td class="actions">
-        {% if f.can_preview %}
         <a
           href="{{ url_for('stream.watch', file_id=f.id) }}"
           class="btn btn-small"
-          >Putar</a
+          >Lihat</a
         >
-        {% endif %}
         <a
           href="{{ url_for('files.download', file_id=f.id) }}"
           class="btn btn-small"

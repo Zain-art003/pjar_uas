@@ -1,11 +1,10 @@
-{% extends "base.html" %}
-{% block title %}Kirim File via Email{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Kirim File via Email{% endblock %} {%
+block content %}
 <div class="auth-card">
-  <h1>Kirim "{{ file.original_name }}" via Email</h1>
+  <h1 class="file-title">Kirim "{{ file.original_name }}" via Email</h1>
   <form method="POST">
     <label for="to_email">Email Tujuan</label>
-    <input type="email" id="to_email" name="to_email" required autofocus>
+    <input type="email" id="to_email" name="to_email" required autofocus />
 
     <label for="message">Pesan (opsional)</label>
     <textarea id="message" name="message" rows="4"></textarea>

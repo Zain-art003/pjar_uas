@@ -81,6 +81,21 @@ def upload():
     return render_template("upload.html")
 
 
+@files_bp.route("/view/<int:file_id>")
+@login_required
+def view(file_id):
+    record = FileUpload.query.get_or_404(file_id)
+    if record.uploader_id != current_user.id:
+        abort(403)
+
+    return send_from_directory(
+        current_app.config["UPLOAD_FOLDER"],
+        record.stored_name,
+        as_attachment=False,
+        download_name=record.original_name,
+    )
+
+
 @files_bp.route("/download/<int:file_id>")
 @login_required
 def download(file_id):

@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Putar: {{ file.original_name }}{%
 endblock %} {% block content %}
 <div class="watch-card">
-  <h1>{{ file.original_name }}</h1>
+  <h1 class="file-title">{{ file.original_name }}</h1>
 
   {% if file.is_video %}
   <video controls preload="metadata" class="video-player">
@@ -13,6 +13,18 @@ endblock %} {% block content %}
     <source src="{{ url_for('stream.stream', file_id=file.id) }}" />
     Browser Anda tidak mendukung tag audio.
   </audio>
+  {% else %}
+  <div class="preview-frame-wrapper">
+    <iframe
+      src="{{ url_for('files.view', file_id=file.id) }}"
+      title="Preview file"
+      class="preview-frame"
+    ></iframe>
+  </div>
+  <p class="hint">
+    Jika browser tidak bisa menampilkan file secara inline, Anda tetap bisa
+    mengunduh file dari halaman ini.
+  </p>
   {% endif %}
 
   <div class="watch-actions">

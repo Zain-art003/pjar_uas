@@ -58,6 +58,32 @@ class MediaViewUploadTestCase(unittest.TestCase):
             self.assertEqual(stream.status_code, 200)
             self.assertIn("audio/mpeg", stream.headers.get("Content-Type", ""))
 
+    def test_text_file_can_be_previewed_in_browser(self):
+        with self.app.app_context():
+            login = self.client.post(
+                "/login",
+                data={"username": "tester", "password": "secret123"},
+                follow_redirects=True,
+            )
+            self.assertEqual(login.status_code, 200)
+
+            upload = self.client.post(
+                "/upload",
+                data={"file": (io.BytesIO(b"hello from text file"), "sample.txt")},
+                content_type="multipart/form-data",
+                follow_redirects=True,
+            )
+            self.assertEqual(upload.status_code, 200)
+            self.assertIn("File berhasil diupload.", upload.get_data(as_text=True))
+
+            record = FileUpload.query.filter_by(original_name="sample.txt", uploader_id=self.user_id).first()
+            self.assertIsNotNone(record)
+
+            watch = self.client.get(f"/watch/{record.id}")
+            self.assertEqual(watch.status_code, 200)
+            self.assertIn("iframe", watch.get_data(as_text=True))
+            self.assertIn("/view/", watch.get_data(as_text=True))
+
 
 if __name__ == "__main__":
     unittest.main()
