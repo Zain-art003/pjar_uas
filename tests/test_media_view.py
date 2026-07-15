@@ -2,6 +2,7 @@ import io
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 
 os.environ.setdefault("DATABASE_URL", "sqlite:///test_media_view.db")
 
@@ -83,6 +84,33 @@ class MediaViewUploadTestCase(unittest.TestCase):
             self.assertEqual(watch.status_code, 200)
             self.assertIn("iframe", watch.get_data(as_text=True))
             self.assertIn("/view/", watch.get_data(as_text=True))
+
+    @patch("app.auth.send_email", return_value=(True, "Email berhasil dikirim."))
+    def test_register_sends_notification_email(self, mock_send_email):
+        response = self.client.post(
+            "/register",
+            data={
+                "username": "newuser",
+                "email": "newuser@example.com",
+                "password": "secret123",
+                "confirm_password": "secret123",
+            },
+            follow_redirects=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(mock_send_email.call_count, 1)
+
+    @patch("app.auth.send_email", return_value=(True, "Email berhasil dikirim."))
+    def test_login_sends_notification_email(self, mock_send_email):
+        response = self.client.post(
+            "/login",
+            data={"username": "tester", "password": "secret123"},
+            follow_redirects=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(mock_send_email.call_count, 1)
 
 
 if __name__ == "__main__":

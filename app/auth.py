@@ -1,6 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
+from app.mailer import send_email
 from app.models import User, db
 
 auth_bp = Blueprint("auth", __name__)
@@ -42,7 +43,16 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash("Registrasi berhasil, silakan login.", "success")
+        success, email_status = send_email(
+            email,
+            "Registrasi berhasil",
+            f"Halo {username},\n\nAkun Anda berhasil dibuat di webapp. Silakan login menggunakan username dan password Anda.",
+        )
+        if success:
+            flash("Registrasi berhasil, silakan login. Notifikasi email telah dikirim.", "success")
+        else:
+            flash("Registrasi berhasil, silakan login. Namun email notifikasi gagal dikirim: " + email_status, "warning")
+
         return redirect(url_for("auth.login"))
 
     return render_template("register.html")
@@ -63,7 +73,15 @@ def login():
             return render_template("login.html")
 
         login_user(user)
-        flash(f"Selamat datang, {user.username}!", "success")
+        success, email_status = send_email(
+            user.email,
+            "Login berhasil",
+            f"Halo {user.username},\n\nKami mencatat login berhasil ke akun Anda pada {user.created_at.strftime('%d %B %Y %H:%M:%S') if user.created_at else 'waktu sekarang'}.",
+        )
+        if success:
+            flash(f"Selamat datang, {user.username}! Notifikasi email telah dikirim.", "success")
+        else:
+            flash(f"Selamat datang, {user.username}! Login berhasil, namun notifikasi email gagal dikirim: {email_status}", "warning")
         next_page = request.args.get("next")
         return redirect(next_page or url_for("files.dashboard"))
 
